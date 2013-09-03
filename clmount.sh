@@ -17,7 +17,7 @@ LOOP_DEVICE=$(sudo losetup -f)
 sudo losetup $LOOP_DEVICE $IMG_FILE
 
 #echo "#  cryptsetup create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE"
-sudo cryptsetup create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE
+sudo cryptsetup -c aes create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE
 
 #echo "# mount -t ext4 $BTRFS_OPT /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR "
 sudo mount -t ext4 /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR
