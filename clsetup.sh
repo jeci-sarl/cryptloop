@@ -12,8 +12,8 @@ IMG_FILE=$1
 
 echo "# Size off disk ? (in MB)"
 read size
-dd if=/dev/zero of=$IMG_FILE bs=1M count=$size
-#dd of=$IMG_FILE bs=1M count=0 seek=$size
+#dd if=/dev/zero of=$IMG_FILE bs=1M count=$size
+dd of=$IMG_FILE bs=1M count=0 seek=$size
 
 LOOP_DEVICE=$(sudo losetup -f)
 #echo "# losetup $LOOP_DEVICE $IMG_FILE"
