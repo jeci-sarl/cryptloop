@@ -16,17 +16,17 @@ read size
 dd of=$IMG_FILE bs=1M count=0 seek=$size
 
 LOOP_DEVICE=$(sudo losetup -f)
-#echo "# losetup $LOOP_DEVICE $IMG_FILE"
+debug && echo "# losetup $LOOP_DEVICE $IMG_FILE"
 sudo losetup $LOOP_DEVICE $IMG_FILE
 
-#echo "# cryptsetup -c aes --verify-passphrase create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE"
+debug && echo "# cryptsetup -c aes --verify-passphrase create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE"
 sudo cryptsetup -c aes --verify-passphrase create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE
 sudo cryptsetup status $DM_CRYPT_NAME_DEVICE
 
 # force the allocation of data blocks http://wiki.centos.org/HowTos/EncryptedFilesystem
 #sudo dd if=/dev/zero of=/dev/mapper/$DM_CRYPT_NAME_DEVICE
 
-#echo "# mkfs.ext /dev/mapper/$DM_CRYPT_NAME_DEVICE"
+debug && echo "# mkfs.ext4 /dev/mapper/$DM_CRYPT_NAME_DEVICE"
 sudo mkfs.ext4 /dev/mapper/$DM_CRYPT_NAME_DEVICE
 sudo tune2fs -l /dev/mapper/$DM_CRYPT_NAME_DEVICE
 
@@ -38,8 +38,8 @@ sudo touch $TMP_DIR/remove_me
 sudo umount $TMP_DIR
 rm -r $TMP_DIR
 
-#echo "# Remove Crypt Device"
+debug && echo "# Remove Crypt Device"
 sudo cryptsetup remove $DM_CRYPT_NAME_DEVICE
-#echo "# delete loop device"
+debug && echo "# delete loop device"
 sudo losetup -d $LOOP_DEVICE 
 
