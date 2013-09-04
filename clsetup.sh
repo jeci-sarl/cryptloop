@@ -34,7 +34,10 @@ sudo tune2fs -l /dev/mapper/$DM_CRYPT_NAME_DEVICE
 TMP_DIR=/tmp/btrfloop$LOOP_DEVICE
 mkdir -p $TMP_DIR
 sudo mount -t ext4 /dev/mapper/$DM_CRYPT_NAME_DEVICE $TMP_DIR
+
 sudo touch $TMP_DIR/remove_me
+debug && echo "sudo chown $(whoami) $TMP_DIR"
+sudo chown -R $(whoami) $TMP_DIR
 sudo umount $TMP_DIR
 rm -r $TMP_DIR
 
