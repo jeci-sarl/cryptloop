@@ -18,8 +18,22 @@ sudo losetup $LOOP_DEVICE $IMG_FILE
 
 debug && echo "#  cryptsetup create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE"
 sudo cryptsetup -c aes create $DM_CRYPT_NAME_DEVICE $LOOP_DEVICE
+fail=$?
+debug && echo "crypto return val : $fail"
 
-debug && echo "# mount -t ext4 $MOUNT_OPT /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR "
-sudo mount -t ext4 $MOUNT_OPT /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR
+if [ $fail -eq 0 ]
+then
+	debug && echo "# mount -t ext4 $MOUNT_OPT /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR "
+	sudo mount -t ext4 $MOUNT_OPT /dev/mapper/$DM_CRYPT_NAME_DEVICE $IMG_MOUNT_DIR
+	fail=$?
+	debug && echo "mount return val : $fail"
+fi
 
+if [ $fail -ne 0 ]
+then
+sudo cryptsetup -c aes remove $DM_CRYPT_NAME_DEVICE 
+sudo losetup -d $LOOP_DEVICE 
+fi
+
+	
 
