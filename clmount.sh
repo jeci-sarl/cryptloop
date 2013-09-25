@@ -7,6 +7,7 @@ fi
 
 
 source config.sh
+validCryptDeviceName
 
 IMG_FILE=$1
 IMG_MOUNT_DIR=$2
@@ -29,6 +30,7 @@ then
 	debug && echo "mount return val : $fail"
 fi
 
+## IF FAIL CLEANING
 if [ $fail -ne 0 ]
 then
 sudo cryptsetup -c aes remove $DM_CRYPT_NAME_DEVICE 
